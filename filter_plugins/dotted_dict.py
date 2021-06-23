@@ -1,6 +1,7 @@
 import operator
 import json
 from collections import defaultdict
+from functools import reduce
 
 class FilterModule(object):
   ''' Converts CloudFormation Template Parameters to Stack Input mappings '''
@@ -13,7 +14,7 @@ def dotted_dict(vars, paths=[]):
   infinitedict = lambda: defaultdict(infinitedict)
   data = infinitedict()
   vars_keys = vars.keys()
-  vars_keys.sort(key=len)
+  vars_keys = sorted(vars_keys, key=len)
   params = [(k,vars[k]) for p in paths for k in vars_keys if k.startswith(p) ]
   for param in params:
     keys = param[0].split('.')
